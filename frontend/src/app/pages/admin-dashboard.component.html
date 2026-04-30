@@ -1,0 +1,96 @@
+<div class="admin-dashboard">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+  <div class="page-header">
+    <div class="header-left">
+      <mat-icon class="header-icon">insights</mat-icon>
+      <div>
+        <h1>Vue d'ensemble</h1>
+        <p class="subtitle">Tableau de bord administrateur</p>
+      </div>
+    </div>
+  </div>
+
+  <mat-card *ngIf="error" class="error-card">
+    <mat-card-content>
+      <mat-icon>error</mat-icon> {{ error }}
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Statistiques -->
+  <div class="stats-grid">
+    <mat-card class="stat-card" routerLink="/admin/kits">
+      <mat-card-content>
+        <div class="stat-icon primary"><mat-icon>devices</mat-icon></div>
+        <div class="stat-content">
+          <p class="stat-label">Total Kits</p>
+          <h2 class="stat-value">{{ getTotalKitsByStatus() }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" routerLink="/admin/kits">
+      <mat-card-content>
+        <div class="stat-icon accent"><mat-icon>signal_wifi_4_bar</mat-icon></div>
+        <div class="stat-content">
+          <p class="stat-label">Kits Actifs</p>
+          <h2 class="stat-value">{{ getActiveKitsCount() }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" routerLink="/admin/kits">
+      <mat-card-content>
+        <div class="stat-icon warn"><mat-icon>inventory_2</mat-icon></div>
+        <div class="stat-content">
+          <p class="stat-label">Kits en Stock</p>
+          <h2 class="stat-value">{{ getInStockKitsCount() }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" routerLink="/admin/users">
+      <mat-card-content>
+        <div class="stat-icon info"><mat-icon>groups</mat-icon></div>
+        <div class="stat-content">
+          <p class="stat-label">Utilisateurs</p>
+          <h2 class="stat-value">{{ totalUsers }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" routerLink="/admin/assign">
+      <mat-card-content>
+        <div class="stat-icon success"><mat-icon>assignment_turned_in</mat-icon></div>
+        <div class="stat-content">
+          <p class="stat-label">Kits Assignés</p>
+          <h2 class="stat-value">{{ getAssignedKitsCount() }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon danger"><mat-icon>signal_wifi_off</mat-icon></div>
+        <div class="stat-content">
+          <p class="stat-label">Kits Hors Ligne</p>
+          <h2 class="stat-value warn">{{ getOfflineKitsCount() }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Raccourcis -->
+  <h2 class="section-title">Actions rapides</h2>
+  <div class="shortcuts">
+    <button mat-raised-button color="primary" routerLink="/admin/users">
+      <mat-icon>person_add</mat-icon> Gerer les Utilisateurs
+    </button>
+    <button mat-raised-button color="primary" routerLink="/admin/kits">
+      <mat-icon>add_circle</mat-icon> Gerer les Kits
+    </button>
+    <button mat-raised-button color="accent" routerLink="/admin/assign">
+      <mat-icon>link</mat-icon> Affecter des Kits
+    </button>
+  </div>
+</div>

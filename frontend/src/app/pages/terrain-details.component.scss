@@ -1,0 +1,246 @@
+// Terrain Details Component Styles
+
+.terrain-details-container {
+  .tab-content {
+    padding: 24px;
+
+    h2 {
+      margin: 0 0 20px 0;
+      font-size: 20px;
+      font-weight: 700;
+      color: #333;
+    }
+  }
+}
+
+// YOLO Detection Styles
+.yolo-detection-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.yolo-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+
+  .detection-stat {
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(51, 78, 104, 0.1);
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(51, 78, 104, 0.15);
+    }
+
+    mat-card-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .stat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      mat-icon {
+        color: #334e68;
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .stat-value {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 800;
+      color: #334e68;
+    }
+  }
+}
+
+.classifications-section {
+  h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .olive-card {
+    margin-bottom: 12px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(51, 78, 104, 0.08);
+    transition: all 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(51, 78, 104, 0.12);
+      transform: translateX(4px);
+    }
+
+    mat-card-content {
+      padding: 16px;
+    }
+
+    .olive-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .olive-color {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid #ddd;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .olive-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+
+      .label {
+        font-weight: 600;
+        color: #666;
+        min-width: 90px;
+      }
+
+      .value {
+        color: #333;
+      }
+
+      mat-chip-set {
+        margin: 0 !important;
+      }
+
+      mat-progress-bar {
+        flex: 1;
+        height: 6px;
+      }
+    }
+  }
+}
+
+.detection-image-section {
+  h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .detection-image {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(51, 78, 104, 0.15);
+    max-height: 600px;
+    object-fit: cover;
+  }
+}
+
+.no-detection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: #999;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 24px;
+  }
+
+  button {
+    border-radius: 12px;
+    padding: 12px 24px;
+  }
+}
+
+.prediction-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.prediction-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #334e68;
+  }
+
+  mat-chip {
+    width: fit-content;
+  }
+
+  mat-progress-bar {
+    height: 8px;
+  }
+}
+
+.harvest-recommendation {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #f0f5fb;
+  border-radius: 12px;
+  border-left: 4px solid #334e68;
+  font-size: 14px;
+  color: #333;
+  margin-top: 20px;
+
+  mat-icon {
+    color: #334e68;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+}

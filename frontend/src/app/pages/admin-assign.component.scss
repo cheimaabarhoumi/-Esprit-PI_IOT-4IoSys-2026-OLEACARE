@@ -1,0 +1,91 @@
+.admin-page {
+  padding: 0;
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, var(--oc-dark) 0%, var(--oc-primary) 100%);
+    color: var(--oc-surface);
+    padding: 28px 24px;
+    margin-bottom: 24px;
+    border-radius: 10px;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .header-icon { font-size: 40px; width: 40px; height: 40px; opacity: 0.9; }
+      h1 { margin: 0 0 4px 0; font-size: 24px; font-weight: 600; }
+      .subtitle { margin: 0; opacity: 0.85; font-size: 13px; }
+    }
+  }
+
+  .legend-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+
+    .legend-item mat-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      mat-icon { font-size: 14px; width: 14px; height: 14px; }
+    }
+  }
+
+  .table-card {
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+
+  .admin-table {
+    width: 100%;
+    mat-header-cell {
+      background: var(--oc-surface);
+      font-weight: 600;
+      color: var(--oc-dark);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .table-row { transition: background 0.2s; &:hover { background: rgba(134, 151, 94, 0.08); } }
+  }
+
+  .kit-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .kit-icon { color: var(--oc-primary); font-size: 24px; width: 24px; height: 24px; }
+  }
+
+  .assigned-user {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    mat-icon { font-size: 18px; width: 18px; height: 18px; color: var(--oc-primary); }
+  }
+
+  .unassigned { color: var(--oc-primary); font-style: italic; }
+  .assign-btn { font-size: 12px; height: 34px; line-height: 34px; }
+
+  .empty-state {
+    text-align: center;
+    padding: 48px;
+    color: var(--oc-primary);
+    mat-icon { font-size: 56px; width: 56px; height: 56px; opacity: 0.4; }
+    p { margin-top: 12px; font-size: 15px; }
+  }
+
+  mat-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    mat-icon { font-size: 14px; width: 14px; height: 14px; }
+  }
+}

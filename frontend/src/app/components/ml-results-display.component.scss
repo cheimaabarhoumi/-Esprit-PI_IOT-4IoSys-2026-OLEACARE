@@ -1,0 +1,439 @@
+// Variables
+$olive-color: #556B2F;
+$olive-dark: #3d4d20;
+$success-color: #10b981;
+$warning-color: #f59e0b;
+$danger-color: #ef4444;
+$light-bg: #f9fafb;
+$border-color: #e5e7eb;
+
+.ml-results-container {
+  padding: 20px;
+  background-color: $light-bg;
+  border-radius: 8px;
+
+  .results-header {
+    border-bottom: 2px solid $olive-color;
+    padding-bottom: 15px;
+
+    .header-title {
+      color: $olive-color;
+      font-weight: 600;
+      font-size: 24px;
+      margin: 0;
+
+      i {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .card {
+    border: none;
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .card-header {
+      border-radius: 8px 8px 0 0;
+      border: none;
+      padding: 15px;
+      color: white;
+      font-weight: 600;
+
+      &.bg-olive {
+        background-color: $olive-color !important;
+      }
+
+      h5 {
+        margin: 0;
+        font-size: 16px;
+
+        i {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+  }
+
+  .detection-card,
+  .prediction-card {
+    border-left: 4px solid $olive-color;
+  }
+
+  // Statistics
+  .stat-box {
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    border-radius: 8px;
+    margin-bottom: 10px;
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: $olive-color;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 5px;
+    }
+  }
+
+  // Section Titles
+  .section-title {
+    color: #333;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+
+    i {
+      margin-right: 8px;
+    }
+  }
+
+  // Quality Bars
+  .quality-bars {
+    .quality-bar-item {
+      margin-bottom: 15px;
+
+      .quality-label-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        font-size: 13px;
+
+        .quality-label {
+          font-weight: 600;
+          color: #333;
+        }
+
+        .quality-count {
+          color: #666;
+          font-size: 12px;
+        }
+      }
+
+      .progress {
+        background-color: #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+
+        .progress-bar {
+          border-radius: 12px;
+          transition: width 0.5s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 11px;
+          font-weight: 600;
+          color: white;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+  }
+
+  // Color Distribution
+  .color-badges {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+
+    .color-badge {
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      background-color: white;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .color-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        margin-right: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+      }
+
+      .color-text {
+        font-size: 13px;
+        color: #333;
+
+        strong {
+          color: $olive-color;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  // Alert
+  .alert {
+    border-left: 4px solid;
+    border-radius: 6px;
+    margin-top: 15px;
+
+    &.alert-info {
+      background-color: #eff6ff;
+      border-left-color: #3b82f6;
+      color: #1e40af;
+
+      i {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  // Detections List
+  .detections-scroll {
+    max-height: 600px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: $light-bg;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $border-color;
+      border-radius: 3px;
+
+      &:hover {
+        background: #ccc;
+      }
+    }
+  }
+
+  .detection-item {
+    padding: 12px;
+    margin-bottom: 10px;
+    background-color: white;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-color: $olive-color;
+    }
+
+    .detection-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid $border-color;
+
+      .detection-index {
+        font-weight: 700;
+        color: $olive-color;
+        font-size: 13px;
+      }
+
+      .detection-badges {
+        display: flex;
+        gap: 6px;
+
+        .badge {
+          font-size: 11px;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-weight: 600;
+
+          &.quality-badge {
+            color: white !important;
+          }
+        }
+      }
+    }
+
+    .detection-details {
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        margin-bottom: 4px;
+
+        .detail-label {
+          font-weight: 600;
+          color: #666;
+        }
+
+        .detail-value {
+          color: #333;
+          font-family: 'Courier New', monospace;
+        }
+      }
+    }
+  }
+
+  // Prediction Card
+  .prediction-card {
+    border-left-color: $success-color;
+
+    .prediction-stat {
+      text-align: center;
+
+      .prediction-label {
+        font-size: 12px;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
+      }
+
+      .prediction-value {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+
+        &.quality-score {
+          color: $olive-color;
+        }
+
+        &.quantity-value {
+          color: $success-color;
+        }
+      }
+
+      .prediction-unit {
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+      }
+
+      .prediction-bar {
+        margin-top: 10px;
+
+        .progress {
+          height: 8px;
+          background-color: #e5e7eb;
+          border-radius: 10px;
+
+          .progress-bar {
+            border-radius: 10px;
+            transition: width 0.5s ease;
+          }
+        }
+      }
+    }
+
+    .mode-info {
+      text-align: center;
+      padding-top: 10px;
+    }
+  }
+
+  // Summary Cards
+  .summary-card {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .summary-icon {
+      font-size: 24px;
+      margin-right: 12px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(85, 107, 47, 0.1);
+      border-radius: 6px;
+      color: $olive-color;
+    }
+
+    .summary-content {
+      flex: 1;
+
+      .summary-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: $olive-color;
+      }
+
+      .summary-label {
+        font-size: 12px;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+    }
+
+    &.good {
+      background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+
+      .summary-icon {
+        background-color: rgba(16, 185, 129, 0.1);
+        color: $success-color;
+      }
+
+      .summary-value {
+        color: $success-color;
+      }
+    }
+
+    &.medium {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+
+      .summary-icon {
+        background-color: rgba(245, 158, 11, 0.1);
+        color: $warning-color;
+      }
+
+      .summary-value {
+        color: $warning-color;
+      }
+    }
+
+    &.bad {
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+
+      .summary-icon {
+        background-color: rgba(239, 68, 68, 0.1);
+        color: $danger-color;
+      }
+
+      .summary-value {
+        color: $danger-color;
+      }
+    }
+  }
+}
+
+// Utility function for light color detection
+@function isLightColor($color) {
+  @return if(lightness($color) > 50%, true, false);
+}

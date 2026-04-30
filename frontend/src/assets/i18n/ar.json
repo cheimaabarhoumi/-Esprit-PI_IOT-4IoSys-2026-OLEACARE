@@ -1,0 +1,41 @@
+{
+  "profile": {
+    "title": {
+      "admin": "الملف - المشرف",
+      "farmer": "الملف - المزارع"
+    },
+    "addPhoto": "إضافة صورة",
+    "editPhoto": "تعديل الصورة",
+    "removePhoto": "حذف الصورة",
+    "imageModified": "تم تغيير الصورة. احفظ لتطبيق التغييرات.",
+    "memberSince": "عضو منذ {{date}}",
+    "notProvided": "غير متوفر",
+    "firstName": "الاسم",
+    "lastName": "اللقب",
+    "nickname": "الاسم المستعار",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "phonePlaceholder": "+33 6 00 00 00 00",
+    "website": "الموقع",
+    "websitePlaceholder": "https://example.com",
+    "address": "العنوان",
+    "addressPlaceholder": "الشارع، المدينة",
+    "city": "المدينة",
+    "cityPlaceholder": "المدينة",
+    "zip": "الرمز البريدي",
+    "zipPlaceholder": "00000",
+    "farmName": "اسم المزرعة",
+    "farmNamePlaceholder": "اسم المزرعة",
+    "bio": "نبذة",
+    "bioPlaceholder": "حدثنا عنك",
+    "close": "إغلاق",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "editProfile": "تعديل الملف",
+    "photoOptions": "خيارات الصورة"
+  },
+  "role": {
+    "admin": "المشرف",
+    "farmer": "المزارع"
+  }
+}

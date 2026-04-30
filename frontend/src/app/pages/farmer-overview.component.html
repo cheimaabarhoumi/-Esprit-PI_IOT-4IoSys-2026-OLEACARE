@@ -1,0 +1,113 @@
+<div class="farmer-overview">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+  <div class="header-card">
+    <h1>Dashboard Farmer</h1>
+    <p>Analyses prédictives, maturité et recommandations par terrain.</p>
+
+  </div>
+
+ 
+
+  <mat-card *ngIf="error" class="error-card">
+    <mat-card-content>
+      <mat-icon>error</mat-icon>
+      {{ error }}
+    </mat-card-content>
+  </mat-card>
+
+  <div class="stats-grid" *ngIf="!loading">
+    <mat-card class="stat-item">
+      <mat-card-content>
+        <p>Terrains</p>
+        <h2>{{ terrains.length }}</h2>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-item">
+      <mat-card-content>
+        <p>Prédictions disponibles</p>
+        <h2>{{ getPredictionsCount() }}</h2>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-item">
+      <mat-card-content>
+        <p>Score qualité moyen</p>
+        <h2>{{ getAverageQualityScore() }}</h2>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="highlight-card" *ngIf="!loading && getBestHarvestInsight() as best">
+    <mat-card-content>
+      <h3>Meilleure opportunité de récolte</h3>
+      <p><strong>{{ best.terrain.name }}</strong> — {{ getHarvestReadiness(best.prediction) }}</p>
+      <p *ngIf="best.prediction">Date optimale: {{ best.prediction.optimal_harvest_date | date:'mediumDate' }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="charts-grid" *ngIf="!loading && terrains.length > 0">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Qualité estimée par terrain</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <canvas *ngIf="qualityChartConfig" baseChart [data]="qualityChartConfig.data" [type]="qualityChartConfig.type" [options]="qualityChartConfig.options"></canvas>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Quantité estimée par terrain</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <canvas *ngIf="quantityChartConfig" baseChart [data]="quantityChartConfig.data" [type]="quantityChartConfig.type" [options]="quantityChartConfig.options"></canvas>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="full-width">
+      <mat-card-header>
+        <mat-card-title>Indice de maturité (%)</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <canvas *ngIf="maturityChartConfig" baseChart [data]="maturityChartConfig.data" [type]="maturityChartConfig.type" [options]="maturityChartConfig.options"></canvas>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="insights-card" *ngIf="!loading">
+    <mat-card-header>
+      <mat-card-title>Analyses et recommandations par terrain</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="!insights.length" class="empty-state">
+        Aucun terrain disponible pour l’analyse.
+      </div>
+
+      <div class="insight-list" *ngIf="insights.length">
+        <div class="insight-item" *ngFor="let item of insights">
+          <h4>{{ item.terrain.name }}</h4>
+
+          <div class="metrics" *ngIf="item.prediction as prediction; else noPrediction">
+            <p>Qualité: <strong>{{ prediction.quality_grade }}</strong> ({{ prediction.quality_score }}/10)</p>
+            <p>Quantité: <strong>{{ prediction.total_oil_liters }} L</strong></p>
+            <p>Maturité: <strong>{{ (prediction.maturity_index * 100).toFixed(1) }}%</strong></p>
+            <p>Date de récolte recommandée: <strong>{{ prediction.optimal_harvest_date | date:'mediumDate' }}</strong></p>
+          </div>
+
+          <ng-template #noPrediction>
+            <p class="muted">Pas de prédiction disponible pour ce terrain.</p>
+          </ng-template>
+
+          <div class="recommendations">
+            <p class="recommendations-title">Recommandations</p>
+            <ul>
+              <li *ngFor="let recommendation of item.recommendations">{{ recommendation }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

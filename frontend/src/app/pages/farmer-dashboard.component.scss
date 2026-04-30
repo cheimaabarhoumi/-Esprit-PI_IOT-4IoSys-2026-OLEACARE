@@ -1,0 +1,468 @@
+// Farmer Dashboard Component Styles
+.farmer-dashboard {
+  padding: 0;
+
+  .page-header {
+    background: #eef3f8;
+    color: var(--oc-dark);
+    padding: 30px 30px 28px;
+    margin-bottom: 34px;
+    border-radius: 24px;
+    box-shadow: 0 18px 36px rgba(31, 41, 55, 0.08);
+
+    .header-content {
+      h1 {
+        margin: 0 0 10px 0;
+        font-size: 32px;
+        font-weight: 800;
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--oc-muted);
+        font-size: 15px;
+        line-height: 1.65;
+      }
+    }
+  }
+
+  .quick-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-bottom: 36px;
+  }
+
+  .stat-card {
+    background: var(--oc-card);
+    border-radius: 24px;
+    box-shadow: 0 18px 36px rgba(31, 41, 55, 0.08);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 42px rgba(31, 41, 55, 0.12);
+    }
+
+    &.notification {
+      border-left: 5px solid #5f7a92;
+    }
+
+    mat-card-content {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 22px;
+    }
+
+    .stat-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #334e68 0%, #5f7a92 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+
+      &.warning {
+        background: linear-gradient(135deg, #5f7a92 0%, #3c556c 100%);
+      }
+    }
+
+    .stat-info {
+      flex: 1;
+
+      .stat-label {
+        margin: 0;
+        font-size: 12px;
+        text-transform: uppercase;
+        color: var(--oc-muted);
+        font-weight: 600;
+        letter-spacing: 0.12em;
+      }
+
+      .stat-value {
+        margin: 6px 0 0 0;
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--oc-dark);
+      }
+    }
+  }
+
+  .error-card {
+    background: #fff4f4;
+    border-left: 4px solid #c45555;
+    margin-bottom: 24px;
+
+    mat-card-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #7d3535;
+
+      mat-icon {
+        color: #7d3535;
+      }
+    }
+  }
+
+  .section-card {
+    border-radius: 24px;
+    box-shadow: 0 18px 36px rgba(31, 41, 55, 0.08);
+    margin-bottom: 32px;
+    overflow: hidden;
+
+    mat-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 26px;
+      background: #f7fafc;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.12);
+
+      mat-card-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--oc-dark);
+        margin: 0;
+
+        mat-icon {
+          color: var(--oc-primary);
+        }
+
+        .unread-badge {
+          margin-left: 16px;
+          background-color: #5f7a92;
+          color: var(--oc-surface);
+          border-radius: 999px;
+          padding: 4px 12px;
+          font-size: 12px;
+          font-weight: 600;
+        }
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 10px;
+        margin-left: auto;
+
+        button {
+          white-space: nowrap;
+        }
+      }
+    }
+
+    mat-card-content {
+      padding: 24px;
+    }
+  }
+
+  .terrains-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  .terrain-card {
+    border-radius: 24px;
+    overflow: hidden;
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+    background: var(--oc-card);
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 38px rgba(31, 41, 55, 0.12);
+    }
+
+    mat-card-header {
+      background: #f3f6eb;
+      padding: 18px 18px 16px;
+      margin: 0;
+
+      mat-card-title {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      mat-card-subtitle {
+        font-size: 13px;
+        color: var(--oc-muted);
+      }
+    }
+
+    mat-card-content {
+      padding: 18px;
+    }
+
+    .terrain-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--oc-dark);
+
+        mat-icon {
+          font-size: 18px;
+          color: var(--oc-primary);
+        }
+      }
+    }
+
+    mat-card-actions {
+      padding: 14px 18px 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+
+      button {
+        flex: 1;
+        min-width: 100px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        
+        &[color="primary"] {
+          background-color: #334e68;
+          color: white;
+          
+          &:hover {
+            background-color: #1f3249;
+            box-shadow: 0 4px 12px rgba(51, 78, 104, 0.3);
+          }
+        }
+        
+        &[color="accent"] {
+          background-color: #5f7a92;
+          color: white;
+          
+          &:hover {
+            background-color: #3c556c;
+            box-shadow: 0 4px 12px rgba(95, 122, 146, 0.3);
+          }
+        }
+        
+        &[color="warn"] {
+          background-color: #d97574;
+          color: white;
+          
+          &:hover {
+            background-color: #c45555;
+            box-shadow: 0 4px 12px rgba(217, 117, 116, 0.3);
+          }
+        }
+        
+        mat-icon {
+          margin-right: 6px;
+        }
+      }
+    }
+  }
+
+  .alerts-list {
+    .mat-list-item {
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      border-radius: 16px;
+      margin-bottom: 8px;
+      padding: 12px 14px;
+
+      &:hover {
+        background-color: rgba(51, 78, 104, 0.08);
+      }
+
+      &.unread {
+        background-color: rgba(51, 78, 104, 0.14);
+        font-weight: 600;
+
+        .unread-indicator {
+          color: var(--oc-dark);
+        }
+      }
+
+      .alert-time {
+        font-size: 12px;
+        color: var(--oc-muted);
+        margin-top: 4px;
+      }
+
+      .warn {
+        color: var(--oc-dark);
+      }
+    }
+  }
+
+  .no-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 20px;
+    text-align: center;
+    color: var(--oc-muted);
+
+    mat-icon {
+      font-size: 60px;
+      margin-bottom: 16px;
+      opacity: 0.26;
+    }
+
+    p {
+      font-size: 14px;
+      margin: 0;
+    }
+  }
+
+  .quick-actions {
+    display: flex;
+    gap: 18px;
+    justify-content: flex-end;
+    margin-top: 34px;
+    padding: 22px 0;
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+      justify-content: stretch;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 180px;
+    }
+  }
+
+  .terrains-content {
+    padding: 0;
+  }
+
+  .kits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .kit-item {
+    border: 1px solid rgba(31, 41, 55, 0.10);
+    border-radius: 24px;
+    padding: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    background: #f8fafc;
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+    }
+  }
+
+  .kit-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .kit-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+
+    mat-icon {
+      color: var(--oc-primary);
+      font-size: 20px;
+    }
+  }
+
+  .kit-text {
+    color: var(--oc-dark);
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .kit-select {
+    width: 320px;
+    max-width: 100%;
+    margin-top: 12px;
+  }
+
+  .kit-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .kit-meta {
+    display: flex;
+    justify-content: flex-end;
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 600px) {
+  .farmer-dashboard {
+    .page-header {
+      padding: 20px 18px;
+
+      .header-content h1 {
+        font-size: 24px;
+      }
+    }
+
+    .section-card {
+      mat-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .header-actions {
+          width: 100%;
+          margin-left: 0;
+          margin-top: 14px;
+
+          button {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .terrains-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .kit-item {
+      flex-direction: column;
+    }
+  }
+
+  .live-prediction {
+    padding: 15px;
+    background: #1e1e1e;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+
+  .prediction-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .prediction-table th,
+  .prediction-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+}

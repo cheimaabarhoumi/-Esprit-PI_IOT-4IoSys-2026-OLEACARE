@@ -1,0 +1,214 @@
+<div class="ml-results-container" *ngIf="detection || prediction">
+  <!-- Header Section -->
+  <div class="results-header mb-4">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <h2 class="header-title">
+          <i class="bi bi-search"></i> Résultats de Détection & Prédiction
+        </h2>
+      </div>
+      <div class="col-auto ms-auto" *ngIf="timestamp">
+        <small class="text-muted">{{ timestamp | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Left Column: Main Stats -->
+    <div class="col-lg-8">
+      <!-- Detection Summary Card -->
+      <div class="card shadow-sm mb-4 detection-card" *ngIf="detection">
+        <div class="card-header bg-olive">
+          <h5 class="mb-0">
+            <i class="bi bi-capsule"></i> Résultats de Détection YOLO
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row text-center mb-4">
+            <div class="col-md-6">
+              <div class="stat-box">
+                <div class="stat-value">{{ detection.total_detected }}</div>
+                <div class="stat-label">Olives Détectées</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="stat-box">
+                <div class="stat-value">{{ (detection.avg_confidence * 100).toFixed(1) }}%</div>
+                <div class="stat-label">Confiance Moyenne</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quality Distribution -->
+          <div class="mb-4">
+            <h6 class="section-title"> Distribution par Qualité</h6>
+            <div class="quality-bars">
+              <div *ngFor="let quality of qualityCounts" class="quality-bar-item">
+                <div class="quality-label-row">
+                  <span class="quality-label">{{ getQualityLabel(quality.quality) }}</span>
+                  <span class="quality-count">{{ quality.count }} ({{ quality.percentage.toFixed(1) }}%)</span>
+                </div>
+                <div class="progress" style="height: 24px;">
+                  <div 
+                    class="progress-bar"
+                    [style.width]="getProgressBarWidth(quality.percentage)"
+                    [style.background-color]="getQualityColor(quality.quality)"
+                    role="progressbar">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Color Distribution -->
+          <div class="mb-4" *ngIf="colorCounts.length > 0">
+            <h6 class="section-title"> Distribution par Couleur</h6>
+            <div class="color-badges">
+              <div *ngFor="let colorItem of colorCounts" class="color-badge">
+                <span class="color-dot" [style.background-color]="colorItem.color"></span>
+                <span class="color-text">
+                  {{ getColorLabel(colorItem.color) }}: <strong>{{ colorItem.count }}</strong>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dominant Color -->
+          <div class="alert alert-info" *ngIf="detection.dominant_color">
+            <i class="bi bi-info-circle"></i>
+            <strong>Couleur dominante:</strong> {{ getColorLabel(detection.dominant_color) }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Detections List -->
+      <div class="card shadow-sm" *ngIf="detection && detection.detections.length > 0">
+        <div class="card-header bg-olive">
+          <h5 class="mb-0">
+            <i class="bi bi-list-ul"></i> Détail des Olives Détectées
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="detections-scroll">
+            <div *ngFor="let detection of detection!.detections; let i = index" class="detection-item">
+              <div class="detection-header">
+                <span class="detection-index">#{{ i + 1 }}</span>
+                <span class="detection-badges">
+                  <span class="badge" [style.background-color]="detection.color" 
+                        [style.color]="isLightColor(detection.color) ? '#000' : '#fff'">
+                    {{ getColorLabel(detection.color) }}
+                  </span>
+                  <span class="badge quality-badge" [style.background-color]="getQualityColor(detection.quality)">
+                    {{ getQualityLabel(detection.quality) }}
+                  </span>
+                </span>
+              </div>
+              <div class="detection-details">
+                <div class="detail-row">
+                  <span class="detail-label">Confiance:</span>
+                  <span class="detail-value">{{ (detection.confidence * 100).toFixed(1) }}%</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Position:</span>
+                  <span class="detail-value">
+                    ({{ detection.bbox.x1 }}, {{ detection.bbox.y1 }}) → 
+                    ({{ detection.bbox.x2 }}, {{ detection.bbox.y2 }})
+                  </span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Dimensions:</span>
+                  <span class="detail-value">
+                    {{ detection.bbox.width }}×{{ detection.bbox.height }} px
+                    ({{ (detection.bbox.area || 0).toFixed(0) }} px²)
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Prediction & Stats -->
+    <div class="col-lg-4">
+      <!-- Prediction Card -->
+      <div class="card shadow-sm mb-4 prediction-card" *ngIf="prediction">
+        <div class="card-header bg-success">
+          <h5 class="mb-0">
+            <i class="bi bi-graph-up"></i> Prédictions ML
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="prediction-stat mb-4">
+            <div class="prediction-label">Score de Qualité</div>
+            <div class="prediction-value quality-score">{{ prediction.quality.toFixed(2) }}/100</div>
+            <div class="prediction-bar">
+              <div class="progress">
+                <div class="progress-bar" [style.width]="prediction.quality + '%'" 
+                     [style.background-color]="prediction.quality > 70 ? '#10b981' : prediction.quality > 50 ? '#f59e0b' : '#ef4444'">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="prediction-stat">
+            <div class="prediction-label">Quantité Prédite</div>
+            <div class="prediction-value quantity-value">{{ prediction.quantity.toFixed(1) }}</div>
+            <div class="prediction-unit">litres d'huile</div>
+          </div>
+
+          <hr>
+
+          <div class="mode-info" *ngIf="prediction.integration_mode">
+            <small class="text-muted">
+              <i class="bi bi-info-circle"></i> Mode: {{ prediction.integration_mode }}
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="row g-3" *ngIf="detection">
+        <div class="col-12">
+          <div class="summary-card">
+            <div class="summary-icon">✓</div>
+            <div class="summary-content">
+              <div class="summary-value">{{ detection.total_detected }}</div>
+              <div class="summary-label">Olives Détectées</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12" *ngIf="qualityCounts[0]">
+          <div class="summary-card good">
+            <div class="summary-icon">★</div>
+            <div class="summary-content">
+              <div class="summary-value">{{ qualityCounts[0].count }}</div>
+              <div class="summary-label">Bonne Qualité</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12" *ngIf="qualityCounts[1]">
+          <div class="summary-card medium">
+            <div class="summary-icon">◐</div>
+            <div class="summary-content">
+              <div class="summary-value">{{ qualityCounts[1].count }}</div>
+              <div class="summary-label">Qualité Moyenne</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12" *ngIf="qualityCounts[2] || qualityCounts[3]">
+          <div class="summary-card bad">
+            <div class="summary-icon">✗</div>
+            <div class="summary-content">
+              <div class="summary-value">{{ (qualityCounts[2]?.count || 0) + (qualityCounts[3]?.count || 0) }}</div>
+              <div class="summary-label">Faible/Endommagée</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

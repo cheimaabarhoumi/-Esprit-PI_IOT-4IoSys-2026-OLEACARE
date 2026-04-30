@@ -1,0 +1,185 @@
+<div class="profile-dialog">
+  <div mat-dialog-title class="dialog-header">
+    <span>{{ data.isAdmin ? ('profile.title.admin' | translate) : ('profile.title.farmer' | translate) }}</span>
+    <button mat-icon-button [mat-dialog-close]="null" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="profile-content">
+    <div class="profile-summary" *ngIf="!isEditMode">
+      <div class="profile-image-section">
+        <div class="image-container">
+          <img 
+            *ngIf="profileImagePreview" 
+            [src]="profileImagePreview" 
+            alt="Profile" 
+            class="profile-image"
+          />
+          <div 
+            *ngIf="!profileImagePreview" 
+            class="avatar-placeholder">
+            <span class="initials">{{ getInitials() }}</span>
+          </div>
+
+          <div class="image-overlay">
+            <button mat-icon-button class="image-options-btn" [matMenuTriggerFor]="imageMenu" [attr.aria-label]="'profile.photoOptions' | translate">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <mat-menu #imageMenu="matMenu" class="image-context-menu">
+          <button mat-menu-item (click)="editImage(fileInput)">
+            <mat-icon>photo_camera</mat-icon>
+            <span>{{ profileImagePreview ? ('profile.editPhoto' | translate) : ('profile.addPhoto' | translate) }}</span>
+          </button>
+          
+          
+          <button mat-menu-item *ngIf="profileImagePreview" (click)="removeImage()" class="delete-option">
+            <mat-icon>delete</mat-icon>
+            <span>{{ 'profile.removePhoto' | translate }}</span>
+          </button>
+        </mat-menu>
+
+        <input 
+          #fileInput 
+          type="file" 
+          accept="image/*" 
+          hidden
+          (change)="onFileSelected($event)" />
+
+         <div class="image-action-banner" *ngIf="imageHasPendingChanges()">
+           <span>{{ 'profile.imageModified' | translate }}</span>
+           <div class="action-buttons">
+             <button mat-flat-button color="primary" (click)="saveImageChanges()" [disabled]="isLoading">
+               {{ 'profile.save' | translate }}
+             </button>
+             <button mat-button (click)="cancelImageChanges()" [disabled]="isLoading">
+               {{ 'profile.cancel' | translate }}
+             </button>
+           </div>
+         </div>
+      </div>
+
+      <div class="user-info-header">
+        <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+        <div class="meta-row">
+          <p class="role-badge" [class.admin]="user.role === 'admin'">
+            {{ user.role === 'admin' ? ('role.admin' | translate) : ('role.farmer' | translate) }}
+          </p>
+          <p class="user-nickname" *ngIf="user.nickname">{{ user.nickname }}</p>
+        </div>
+      </div>
+
+      <div class="quick-meta">
+        <span class="meta-pill">
+          <mat-icon>email</mat-icon>
+          {{ user.email }}
+        </span>
+        <span class="meta-pill">
+          <mat-icon>phone</mat-icon>
+          {{ user.phoneNumber || ('profile.notProvided' | translate) }}
+        </span>
+      </div>
+    </div>
+
+
+    <form *ngIf="isEditMode" [formGroup]="profileForm" class="profile-form">
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>{{ 'profile.firstName' | translate }}</mat-label>
+          <input matInput formControlName="firstName">
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>{{ 'profile.lastName' | translate }}</mat-label>
+          <input matInput formControlName="lastName">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field class="form-field full-width">
+        <mat-label>{{ 'profile.nickname' | translate }}</mat-label>
+        <input matInput formControlName="nickname">
+      </mat-form-field>
+
+      <mat-form-field class="form-field full-width">
+        <mat-label>{{ 'profile.email' | translate }}</mat-label>
+        <input matInput formControlName="email" [disabled]="true">
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+
+      <!-- Phone & Website -->
+      <div class="form-row">
+         <mat-form-field class="form-field">
+           <mat-label>{{ 'profile.phone' | translate }}</mat-label>
+           <input matInput formControlName="phoneNumber" [placeholder]="'profile.phonePlaceholder' | translate">
+           <mat-icon matSuffix>phone</mat-icon>
+         </mat-form-field>
+         <mat-form-field class="form-field">
+             <mat-label>{{ 'profile.website' | translate }}</mat-label>
+           <input matInput formControlName="website" [placeholder]="'profile.websitePlaceholder' | translate">
+           <mat-icon matSuffix>language</mat-icon>
+         </mat-form-field>
+      </div>
+
+       <mat-form-field class="form-field full-width">
+         <mat-label>{{ 'profile.address' | translate }}</mat-label>
+         <input matInput formControlName="address" [placeholder]="'profile.addressPlaceholder' | translate">
+         <mat-icon matSuffix>location_on</mat-icon>
+       </mat-form-field>
+
+       <!-- Ville, Code postal -->
+       <div class="form-row">
+         <mat-form-field class="form-field">
+           <mat-label>{{ 'profile.city' | translate }}</mat-label>
+           <input matInput formControlName="city" [placeholder]="'profile.cityPlaceholder' | translate">
+         </mat-form-field>
+         <mat-form-field class="form-field">
+           <mat-label>{{ 'profile.zip' | translate }}</mat-label>
+           <input matInput formControlName="zipCode" [placeholder]="'profile.zipPlaceholder' | translate">
+         </mat-form-field>
+       </div>
+
+       <!-- Farm Name (if farmer) -->
+       <mat-form-field 
+         *ngIf="user.role === 'farmer'" 
+         class="form-field full-width">
+         <mat-label>{{ 'profile.farmName' | translate }}</mat-label>
+         <input matInput formControlName="farmName" [placeholder]="'profile.farmNamePlaceholder' | translate">
+         <mat-icon matSuffix>agriculture</mat-icon>
+       </mat-form-field>
+
+       <!-- Bio -->
+       <mat-form-field class="form-field full-width">
+         <mat-label>{{ 'profile.bio' | translate }}</mat-label>
+         <textarea 
+           matInput 
+           formControlName="bio" 
+           [placeholder]="'profile.bioPlaceholder' | translate"
+           rows="3"></textarea>
+       </mat-form-field>
+    </form>
+
+    <!-- Info Box -->
+    <div class="info-box">
+      <mat-icon>info</mat-icon>
+      <span>{{ 'profile.memberSince' | translate:{ date: (user.createdAt | date: 'MMM dd, yyyy') } }}</span>
+    </div>
+  </mat-dialog-content>
+
+  <!-- Dialog Actions -->
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-stroked-button (click)="cancel()">
+      {{ isEditMode ? ('profile.cancel' | translate) : ('profile.close' | translate) }}
+    </button>
+    <button 
+      mat-raised-button 
+      color="primary"
+      (click)="isEditMode ? saveProfile() : toggleEditMode()"
+      [disabled]="isLoading">
+      <mat-icon *ngIf="!isLoading">{{ isEditMode ? 'save' : 'edit' }}</mat-icon>
+      <mat-spinner *ngIf="isLoading" diameter="20" class="button-spinner"></mat-spinner>
+      {{ isEditMode ? ('profile.save' | translate) : ('profile.editProfile' | translate) }}
+    </button>
+  </mat-dialog-actions>
+</div>

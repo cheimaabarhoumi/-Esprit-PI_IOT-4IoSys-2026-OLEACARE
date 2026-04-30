@@ -1,0 +1,455 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f1f3e8 0%, #e8eddf 50%, #eef1e4 100%);
+  width: 100%;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 40px 28px;
+  box-sizing: border-box;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 620px;
+  border-radius: 32px !important;
+  box-shadow: 0 35px 90px rgba(34, 54, 28, 0.14) !important;
+  overflow: hidden;
+  background: #ffffff !important;
+  border: 2px solid rgba(91, 117, 69, 0.28);
+}
+
+.login-card mat-card-content {
+  padding: 32px 32px 38px 32px;
+}
+
+.card-header {
+  background: linear-gradient(150deg, #536a38 0%, #738d4f 100%);
+  padding: 42px 32px 30px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.header-icon-wrapper {
+  width: 88px;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 22px 42px rgba(38, 58, 26, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.header-logo {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+}
+
+h1 {
+  margin: 0 0 10px 0;
+  font-size: 34px;
+  font-weight: 800;
+  color: #f6f8f1;
+  letter-spacing: 0.35px;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+  letter-spacing: 0.12px;
+  font-weight: 500;
+  max-width: 90%;
+}
+
+h2 {
+  margin: 0 0 20px 0;
+  font-size: 27px;
+  font-weight: 800;
+  color: #2e3f22;
+  text-align: center;
+  width: 100%;
+  letter-spacing: -0.03em;
+}
+
+p {
+  color: #566445;
+  line-height: 1.75;
+  margin-bottom: 22px;
+  text-align: center;
+  font-size: 15px;
+}
+
+.auth-block {
+  padding: 28px 30px 32px 30px;
+  margin-top: 28px;
+  border: 1px solid rgba(91, 117, 69, 0.22);
+  border-radius: 26px;
+  background: rgba(247, 249, 236, 0.96);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55);
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.message,
+.error-message {
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.message {
+  background-color: #eef5dc;
+  color: #4d602f;
+  border-left: 4px solid #7b974a;
+}
+
+.error-message {
+  background-color: #f8ecea;
+  color: #7b342f;
+  border-left: 4px solid #b35b53;
+}
+
+.toggle-mode {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 24px;
+  color: #4a5b3f;
+  font-size: 15px;
+}
+
+.toggle-mode a {
+  color: #48603d;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.toggle-mode a:hover {
+  text-decoration: underline;
+}
+
+button[mat-raised-button] {
+  height: 52px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.35px;
+  border-radius: 16px !important;
+  margin-top: 10px;
+  box-shadow: 0 14px 28px rgba(39, 60, 27, 0.16) !important;
+  background: #5c713c !important;
+  color: #fff !important;
+}
+
+mat-form-field {
+  background: #f9f9f2;
+  border-radius: 12px;
+}
+
+.mat-mdc-form-field-outline {
+  border-color: rgba(111, 133, 81, 0.22) !important;
+}
+
+.mat-mdc-form-field-outline-thick {
+  border-width: 1px !important;
+}
+
+.mat-mdc-form-field-label {
+  color: #4d5f43 !important;
+}
+
+.mat-mdc-form-field.mat-mdc-form-field-appearance-outline .mat-mdc-form-field-flex {
+  background: transparent;
+}
+
+.profile-upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 24px;
+  background: rgba(247, 249, 238, 0.95);
+  border-radius: 18px;
+  border: 1px dashed rgba(91, 117, 69, 0.32);
+}
+
+.image-preview-container {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #eff3e8;
+  border: 2px solid rgba(111, 133, 81, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #4a5b34;
+}
+
+.profile-placeholder mat-icon {
+  font-size: 44px;
+}
+
+.upload-button {
+  border-color: #61733e !important;
+  color: #475132 !important;
+}
+
+.upload-hint {
+  font-size: 12px;
+  color: #6d7a58;
+  margin: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 680px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .login-card {
+    max-width: 100%;
+  }
+}
+
+
+// ========== New Styles for Professional Registration ==========
+
+.reg-subtitle {
+  font-size: 14px;
+  color: #6a7a64;
+  margin-bottom: 20px !important;
+}
+
+// Profile Upload Section
+.profile-upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 24px;
+  background: linear-gradient(135deg, #f8faf5 0%, #f3f5f0 100%);
+  border-radius: 16px;
+  border: 2px dashed rgba(91, 117, 69, 0.2);
+
+  .image-preview-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: white;
+    border: 3px solid #5b7545;
+    box-shadow: 0 4px 12px rgba(91, 117, 69, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .profile-preview {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #5b7545 0%, #4d6d2d 100%);
+      color: white;
+
+      mat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 8px;
+      }
+
+      p {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 600;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.9);
+      }
+    }
+  }
+
+  .upload-button {
+    margin-bottom: 12px;
+    border-color: #5b7545 !important;
+    color: #5b7545 !important;
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+
+  .upload-hint {
+    font-size: 12px;
+    color: #999;
+    margin: 0;
+    font-style: italic;
+  }
+}
+
+// Form Layout
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.half-width {
+  width: 100%;
+}
+
+// Advanced Fields
+.advanced-toggle {
+  margin: 20px 0 16px 0;
+  display: flex;
+  justify-content: center;
+
+  .toggle-btn {
+    color: #5b7545 !important;
+    font-weight: 600;
+    text-transform: none !important;
+    font-size: 14px !important;
+
+    mat-icon {
+      margin-right: 8px;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      background: rgba(91, 117, 69, 0.08) !important;
+    }
+  }
+}
+
+.advanced-fields {
+  animation: slideDown 0.3s ease-out;
+  margin-bottom: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(91, 117, 69, 0.1);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive Design
+@media (max-width: 600px) {
+  .login-card {
+    max-width: 100%;
+    border-radius: 16px !important;
+
+    .card-header {
+      padding: 24px 20px 16px 20px;
+      margin: -12px -12px 16px -12px;
+
+      .header-icon-wrapper {
+        width: 70px;
+        height: 70px;
+      }
+
+      .header-logo {
+        width: 50px;
+        height: 50px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .subtitle {
+        font-size: 13px;
+      }
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+  }
+
+  .login-container {
+    padding: 14px;
+  }
+
+  .profile-upload-section {
+    padding: 20px 16px;
+
+    .image-preview-container {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  button[mat-raised-button] {
+    height: 44px;
+    font-size: 14px;
+  }
+}
+
+// Loading Spinner
+mat-spinner {
+  display: inline-block !important;
+  margin: 0 !important;
+}

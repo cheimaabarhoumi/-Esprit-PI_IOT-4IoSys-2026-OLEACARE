@@ -1,0 +1,206 @@
+<div class="terrain-details-container">
+  <mat-toolbar color="primary">
+    <button mat-icon-button routerLink="/farmer">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span>{{ terrain?.name || 'Terrain Details' }}</span>
+  </mat-toolbar>
+
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+  <div class="content" *ngIf="!loading">
+    <mat-tab-group>
+      <!-- YOLO Detection Tab (NEW) -->
+      <mat-tab label="YOLO Olive Detection">
+        <div class="tab-content">
+          <h2>Real-time Olive Detection & Classification</h2>
+          <mat-card>
+            <mat-card-content>
+              <div *ngIf="yoloDetection" class="yolo-detection-grid">
+                <!-- Detection Summary -->
+                <div class="yolo-summary">
+                  <mat-card class="detection-stat">
+                    <mat-card-content>
+                      <div class="stat-header">
+                        <mat-icon>visibility</mat-icon>
+                        <h3>Olives Detected</h3>
+                      </div>
+                      <p class="stat-value">{{ yoloDetection.total_detected || 0 }}</p>
+                    </mat-card-content>
+                  </mat-card>
+
+                  <mat-card class="detection-stat">
+                    <mat-card-content>
+                      <div class="stat-header">
+                        <mat-icon>check_circle</mat-icon>
+                        <h3>Average Confidence</h3>
+                      </div>
+                      <p class="stat-value">{{ (yoloDetection.avg_confidence * 100).toFixed(1) }}%</p>
+                    </mat-card-content>
+                  </mat-card>
+
+                  <mat-card class="detection-stat">
+                    <mat-card-content>
+                      <div class="stat-header">
+                        <mat-icon>palette</mat-icon>
+                        <h3>Dominant Color</h3>
+                      </div>
+                      <p class="stat-value">{{ yoloDetection.dominant_color || 'N/A' }}</p>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+
+                <!-- Olive Classifications -->
+                <div class="classifications-section">
+                  <h3>Classification Results</h3>
+                  <mat-card *ngFor="let olive of yoloDetection.detections" class="olive-card">
+                    <mat-card-content>
+                      <div class="olive-info">
+                        <div class="olive-color" [style.backgroundColor]="getColorCode(olive.color)"></div>
+                        <div class="olive-details">
+                          <div class="detail-row">
+                            <span class="label">Color:</span>
+                            <span class="value">{{ olive.color | titlecase }}</span>
+                          </div>
+                          <div class="detail-row">
+                            <span class="label">Quality:</span>
+                            <mat-chip [color]="getQualityColor(olive.quality)" selected>
+                              {{ olive.quality | titlecase }}
+                            </mat-chip>
+                          </div>
+                          <div class="detail-row">
+                            <span class="label">Confidence:</span>
+                            <mat-progress-bar [value]="olive.confidence * 100"></mat-progress-bar>
+                            <span>{{ (olive.confidence * 100).toFixed(1) }}%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+
+                <!-- Detection Image -->
+                <div class="detection-image-section" *ngIf="yoloDetection.image_url">
+                  <h3>Detection Image</h3>
+                  <img [src]="yoloDetection.image_url" alt="Olive detection result" class="detection-image">
+                </div>
+              </div>
+
+              <div *ngIf="!yoloDetection" class="no-detection">
+                <mat-icon>image_not_supported</mat-icon>
+                <p>No detection data available yet.</p>
+                <button mat-raised-button color="primary" (click)="runYoloDetection()">
+                  <mat-icon>camera</mat-icon>
+                  Run YOLO Detection
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+
+      <!-- Sensor Data Tab -->
+      <mat-tab label="Sensor Data">
+        <div class="tab-content">
+          <h2>Real-time Sensor Data</h2>
+          
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Temperature</mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngIf="temperatureChartConfig">
+                <canvas baseChart [data]="temperatureChartConfig.data" 
+                        [options]="temperatureChartConfig.options"
+                        [type]="temperatureChartConfig.type"></canvas>
+              </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Humidity</mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngIf="humidityChartConfig">
+                <canvas baseChart [data]="humidityChartConfig.data"
+                        [options]="humidityChartConfig.options"
+                        [type]="humidityChartConfig.type"></canvas>
+              </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Soil Moisture</mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngIf="soilMoistureChartConfig">
+                <canvas baseChart [data]="soilMoistureChartConfig.data"
+                        [options]="soilMoistureChartConfig.options"
+                        [type]="soilMoistureChartConfig.type"></canvas>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </mat-tab>
+
+      <!-- Predictions Tab -->
+      <mat-tab label="AI Predictions">
+        <div class="tab-content">
+          <h2>Latest Prediction</h2>
+          <mat-card *ngIf="latestPrediction">
+            <mat-card-content>
+              <div class="prediction-grid">
+                <div class="prediction-item">
+                  <span class="label">Quality Grade:</span>
+                  <mat-chip [style.background]="getQualityColor(latestPrediction.quality_grade)">
+                    {{ latestPrediction.quality_grade }}
+                  </mat-chip>
+                </div>
+                <div class="prediction-item">
+                  <span class="label">Quality Score:</span>
+                  <span class="value">{{ latestPrediction.quality_score }}/10</span>
+                </div>
+                <div class="prediction-item">
+                  <span class="label">Maturity:</span>
+                  <mat-progress-bar [value]="latestPrediction.maturity_index * 100"></mat-progress-bar>
+                  <span>{{ (latestPrediction.maturity_index * 100).toFixed(1) }}%</span>
+                </div>
+                <div class="prediction-item">
+                  <span class="label">Expected Oil Yield:</span>
+                  <span class="value">{{ latestPrediction.total_oil_liters }} L</span>
+                </div>
+                <div class="prediction-item">
+                  <span class="label">Estimated Value:</span>
+                  <span class="value">{{ latestPrediction.oil_value_TND }} TND</span>
+                </div>
+                <div class="prediction-item">
+                  <span class="label">Optimal Harvest Date:</span>
+                  <span class="value">{{ latestPrediction.optimal_harvest_date | date }}</span>
+                </div>
+              </div>
+              <p class="harvest-recommendation">
+                <mat-icon>info</mat-icon>
+                {{ getHarvestRecommendation() }}
+              </p>
+            </mat-card-content>
+          </mat-card>
+          <mat-card *ngIf="!latestPrediction">
+            <mat-card-content>
+              <p>No predictions available yet.</p>
+              <button mat-raised-button color="primary" (click)="generatePrediction(terrain?._id || '')">
+                Generate Prediction
+              </button>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+
+      <!-- Weather Tab -->
+      <mat-tab label="Weather">
+        <div class="tab-content">
+          <p>Weather integration coming soon...</p>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+  <mat-spinner *ngIf="loading" class="centered"></mat-spinner>
+</div>

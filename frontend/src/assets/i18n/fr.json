@@ -1,0 +1,41 @@
+{
+  "profile": {
+    "title": {
+      "admin": "Profil - Administrateur",
+      "farmer": "Profil - Agriculteur"
+    },
+    "addPhoto": "Ajouter une photo",
+    "editPhoto": "Modifier la photo",
+    "removePhoto": "Supprimer la photo",
+    "imageModified": "Image modifiée. Enregistrez pour appliquer.",
+    "memberSince": "Membre depuis {{date}}",
+    "notProvided": "Non renseigné",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "nickname": "Pseudo",
+    "email": "Email",
+    "phone": "Téléphone",
+    "phonePlaceholder": "+33 6 00 00 00 00",
+    "website": "Site web",
+    "websitePlaceholder": "https://exemple.com",
+    "address": "Adresse",
+    "addressPlaceholder": "Rue, ville",
+    "city": "Ville",
+    "cityPlaceholder": "Ville",
+    "zip": "Code postal",
+    "zipPlaceholder": "00000",
+    "farmName": "Nom de la ferme",
+    "farmNamePlaceholder": "Nom de la ferme",
+    "bio": "Bio",
+    "bioPlaceholder": "Parlez-nous de vous",
+    "close": "Fermer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "editProfile": "Modifier le profil",
+    "photoOptions": "Options photo de profil"
+  },
+  "role": {
+    "admin": "Administrateur",
+    "farmer": "Agriculteur"
+  }
+}

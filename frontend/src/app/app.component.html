@@ -1,0 +1,111 @@
+<!-- Layout sans sidenav pour la page de login -->
+<ng-container *ngIf="isLoginPage">
+  <router-outlet></router-outlet>
+</ng-container>
+
+<!-- Layout principal avec sidenav -->
+<mat-sidenav-container class="sidenav-container" *ngIf="!isLoginPage">
+  <!-- Sidebar Navigation -->
+  <mat-sidenav #sidenav class="sidenav" [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile">
+    <!-- Logo/Brand -->
+    <div class="sidenav-header">
+      <img src="assets/logo.svg" alt="OleaCare logo" class="logo-image" />
+      <h1 class="app-title">{{ title }}</h1>
+    </div>
+
+    <!-- User Profile Section -->
+    <div class="user-profile" *ngIf="currentUser" (click)="openProfileDialog()">
+      <div class="user-avatar">
+        <img 
+          *ngIf="currentUser.profileImage" 
+          [src]="currentUser.profileImage" 
+          alt="Profile"
+          class="avatar-image"
+        />
+        <div 
+          *ngIf="!currentUser.profileImage" 
+          class="avatar-placeholder">
+          <span class="initials">{{ currentUser.firstName?.charAt(0) }}{{ currentUser.lastName?.charAt(0) }}</span>
+        </div>
+        <button
+          mat-icon-button
+          matTooltip="Edit profile"
+          class="avatar-edit-btn"
+          (click)="openProfileDialog(); $event.stopPropagation()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+      <div class="user-info">
+        <p class="user-name">{{ currentUser.firstName }} {{ currentUser.lastName }}</p>
+        <p class="user-role">
+          {{ currentUser.nickname ? currentUser.nickname + ' · ' : '' }}{{ currentUser.role | uppercase }}
+        </p>
+      </div>
+      <mat-icon class="profile-icon">chevron_right</mat-icon>
+    </div>
+
+    <!-- Navigation Menu -->
+    <mat-nav-list>
+      <ng-container *ngFor="let item of getMenuItems()">
+        <mat-list-item
+          [routerLink]="item.route"
+          routerLinkActive="active-menu-item"
+          [routerLinkActiveOptions]="{ exact: item.exact || false }"
+          (click)="isMobile ? sidenav.close() : undefined"
+          [class.menu-item-highlight]="isMenuItemHighlight(item)"
+          class="menu-item">
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </mat-list-item>
+      </ng-container>
+    </mat-nav-list>
+
+    <!-- Logout Button -->
+    <div class="sidenav-footer">
+      <button mat-stroked-button color="warn" (click)="logout()" class="logout-btn">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content class="main-content">
+    <!-- Top Toolbar -->
+    <mat-toolbar color="primary" class="top-toolbar">
+      <button mat-icon-button (click)="sidenav.toggle()" *ngIf="isMobile" class="menu-button">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="toolbar-title">
+        <img src="assets/logo.svg" alt="OleaCare logo" class="toolbar-logo" />
+        OleaCare Platform
+      </span>
+      <span class="spacer"></span>
+      <!-- Language selector removed -->
+      <span class="spacer"></span>
+      <button mat-icon-button [matMenuTriggerFor]="profileMenu" class="user-menu-btn" [matTooltip]="'My profile'">
+        <img *ngIf="currentUser?.profileImage" [src]="currentUser.profileImage" alt="Profile" class="topbar-avatar" />
+        <mat-icon *ngIf="!currentUser?.profileImage">person</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <mat-menu #profileMenu="matMenu" class="profile-menu">
+      <button mat-menu-item (click)="openProfileDialog()">
+        <mat-icon>person</mat-icon>
+        <span>My profile</span>
+      </button>
+      <button mat-menu-item (click)="logout()" class="logout-menu-item">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+
+    <!-- Page Content -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Chatbot flottant (visible pour tous les utilisateurs connectés) -->
+<app-chatbot *ngIf="!isLoginPage"></app-chatbot>

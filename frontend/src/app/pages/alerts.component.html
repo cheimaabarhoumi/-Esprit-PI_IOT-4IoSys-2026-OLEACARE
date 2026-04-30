@@ -1,0 +1,178 @@
+<div class="alerts-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <div class="header-left">
+        <button mat-icon-button routerLink="/farmer" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="header-info">
+          <h1 class="page-title">Alertes & Notifications</h1>
+          <p class="page-subtitle">Surveillez vos terrains et équipements en temps réel</p>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <mat-icon>notifications</mat-icon>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value">{{ total }}</span>
+            <span class="stat-label">Total</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon warning">
+            <mat-icon>notifications_active</mat-icon>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value">{{ getUnreadCount() }}</span>
+            <span class="stat-label">Non lues</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <mat-card class="filters-card">
+      <mat-card-content>
+        <div class="filters-grid">
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Type d'alerte</mat-label>
+            <mat-select>
+              <mat-option value="">Tous</mat-option>
+              <mat-option value="harvest">Récolte</mat-option>
+              <mat-option value="battery">Batterie</mat-option>
+              <mat-option value="offline">Hors ligne</mat-option>
+              <mat-option value="soil">Sol</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Statut</mat-label>
+            <mat-select>
+              <mat-option value="">Tous</mat-option>
+              <mat-option value="unread">Non lues</mat-option>
+              <mat-option value="read">Lues</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="filter-actions">
+            <button mat-stroked-button color="primary">
+              <mat-icon>filter_list</mat-icon>
+              Filtrer
+            </button>
+            <button mat-button color="accent">
+              <mat-icon>clear</mat-icon>
+              Réinitialiser
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Loading State -->
+  <mat-progress-bar *ngIf="loading" mode="indeterminate" class="loading-bar"></mat-progress-bar>
+
+  <!-- Error State -->
+  <mat-card *ngIf="error && !loading" class="error-card">
+    <mat-card-content>
+      <div class="error-content">
+        <mat-icon class="error-icon">error_outline</mat-icon>
+        <div class="error-text">
+          <h3>Erreur de chargement</h3>
+          <p>{{ error }}</p>
+        </div>
+        <button mat-raised-button color="primary" (click)="loadAlerts()">
+          <mat-icon>refresh</mat-icon>
+          Réessayer
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Alerts List -->
+  <div class="alerts-section" *ngIf="!loading && !error">
+    <!-- Empty State -->
+    <mat-card *ngIf="alerts.length === 0" class="empty-state-card">
+      <mat-card-content>
+        <div class="empty-state">
+          <mat-icon class="empty-icon">notifications_none</mat-icon>
+          <h3>Aucune alerte</h3>
+          <p>Toutes vos alertes ont été traitées. Vous serez notifié en cas de nouveaux événements.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Alerts Grid -->
+    <div class="alerts-grid" *ngIf="alerts.length > 0">
+      <mat-card class="alert-card"
+                *ngFor="let alert of alerts; trackBy: trackByAlertId"
+                [ngClass]="getAlertCardClasses(alert)">
+        <mat-card-header class="alert-header">
+          <div class="alert-type-icon" [style.background-color]="getAlertTypeColorHex(alert.type)">
+            <mat-icon>{{ getAlertTypeIcon(alert.type) }}</mat-icon>
+          </div>
+          <div class="alert-header-content">
+            <mat-card-title class="alert-title">{{ getAlertTitle(alert) }}</mat-card-title>
+            <mat-card-subtitle class="alert-subtitle">
+              <mat-icon class="location-icon">location_on</mat-icon>
+              {{ getTerrainName(alert.terrainId) }}
+            </mat-card-subtitle>
+          </div>
+          <div class="alert-actions">
+            <mat-chip [class]="getAlertPriorityClass(alert)" selected>
+              {{ getAlertPriorityText(alert) }}
+            </mat-chip>
+            <button mat-icon-button
+                    [matTooltip]="alert.read ? 'Marquer comme non lue' : 'Marquer comme lue'"
+                    (click)="toggleReadStatus(alert)">
+              <mat-icon>{{ alert.read ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </div>
+        </mat-card-header>
+
+        <mat-card-content class="alert-content">
+          <p class="alert-message">{{ alert.message }}</p>
+
+          <div class="alert-details">
+            <div class="detail-item">
+              <mat-icon>schedule</mat-icon>
+              <span>{{ alert.createdAt | date:'medium' }}</span>
+            </div>
+            <div class="detail-item" *ngIf="alert.title">
+              <mat-icon>label</mat-icon>
+              <span>{{ alert.title }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions class="alert-card-actions">
+          <button mat-button color="primary" (click)="viewTerrain(alert.terrainId)">
+            <mat-icon>visibility</mat-icon>
+            Voir le terrain
+          </button>
+          <button mat-stroked-button color="accent" (click)="dismissAlert(alert)">
+            <mat-icon>done</mat-icon>
+            Acquitter
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-section" *ngIf="total > pageSize">
+      <mat-paginator
+        [length]="total"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[10, 20, 50]"
+        [showFirstLastButtons]="true"
+        (page)="onPageChange($event)"
+        class="custom-paginator">
+      </mat-paginator>
+    </div>
+  </div>
+</div>

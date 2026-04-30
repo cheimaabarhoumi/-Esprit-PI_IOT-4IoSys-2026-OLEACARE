@@ -1,0 +1,308 @@
+<div class="farmer-dashboard">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>Welcome, {{ currentUser?.firstName }}!</h1>
+      <p class="subtitle">Manage your olive orchards and monitor sensor data</p>
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="quick-stats">
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon">
+          <mat-icon>landscape</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Active Terrains</p>
+          <h3 class="stat-value">{{ terrains.length }}</h3>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon">
+          <mat-icon>router</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">IoT Kits</p>
+          <h3 class="stat-value">{{ kits.length }}</h3>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card notification" *ngIf="unreadAlertCount > 0">
+      <mat-card-content>
+        <div class="stat-icon warning">
+          <mat-icon>notifications_active</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Unread Alerts</p>
+          <h3 class="stat-value">{{ unreadAlertCount }}</h3>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Error Message -->
+  <mat-card *ngIf="error" class="error-card">
+    <mat-card-content>
+      <mat-icon>error</mat-icon>
+      {{ error }}
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Terrains Section -->
+  <mat-card class="section-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>landscape</mat-icon>
+        My Terrains
+      </mat-card-title>
+      <div class="header-actions">
+        <button mat-raised-button color="primary" (click)="openCreateTerrainDialog()">
+          <mat-icon>add</mat-icon>
+          New Terrain
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-card-content class="terrains-content">
+      <div *ngIf="terrains.length === 0" class="no-data">
+        <mat-icon>landscape</mat-icon>
+        <p>No terrains yet. Create your first terrain to get started!</p>
+      </div>
+
+      <div class="terrains-grid" *ngIf="terrains.length > 0">
+        <mat-card class="terrain-card" *ngFor="let terrain of terrains">
+          <mat-card-header>
+            <mat-card-title>{{ terrain.name }}</mat-card-title>
+            <mat-card-subtitle>{{ terrain.variety }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="terrain-info">
+              <div class="info-item">
+                <mat-icon>landscape</mat-icon>
+                <span>{{ getTerrainArea(terrain) ?? 'N/A' }} hectares</span>
+              </div>
+              <div class="info-item">
+                <mat-icon>location_on</mat-icon>
+                <span>{{ getTerrainLocation(terrain) }}</span>
+              </div>
+              <div class="info-item" *ngIf="terrain.soilType">
+                <mat-icon>soil_moisture</mat-icon>
+                <span>{{ terrain.soilType | titlecase }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button color="primary" (click)="viewTerrain(terrain)">
+              <mat-icon>visibility</mat-icon>
+              View Details
+            </button>
+            <button mat-icon-button (click)="openEditTerrainDialog(terrain)" [matTooltip]="'Edit'" color="accent">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteTerrain(terrain)" [matTooltip]="'Delete'" color="warn">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Kits Section -->
+  <mat-card class="section-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>router</mat-icon>
+        My IoT Kits
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="kits.length === 0" class="no-data">
+        <mat-icon>router</mat-icon>
+        <p>No IoT kits assigned yet</p>
+      </div>
+
+      <div *ngIf="kits.length > 0" class="kits-list">
+        <div *ngFor="let kit of kits" class="kit-item">
+          <div class="kit-main">
+            <div class="kit-title-row">
+              <mat-icon>router</mat-icon>
+              <strong>{{ kit.kitId }}</strong>
+            </div>
+            <div class="kit-text">Model: {{ kit.model || 'N/A' }}</div>
+            <div class="kit-text">Last Update: {{ getKitLastUpdate(kit) ? (getKitLastUpdate(kit) | date:'short') : 'N/A'
+              }}</div>
+            <div class="kit-text">Assigned Terrain: {{ getAssignedTerrainName(kit) }}</div>
+
+            <mat-form-field appearance="outline" class="kit-select">
+              <mat-label>Select terrain</mat-label>
+              <mat-select [(ngModel)]="kitTerrainSelection[getKitId(kit)]">
+                <mat-option [value]="''">No terrain</mat-option>
+                <mat-option *ngFor="let terrain of terrains" [value]="terrain._id || terrain.id">
+                  {{ terrain.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="kit-actions">
+              <button mat-stroked-button color="primary" (click)="saveKitTerrainAssignment(kit)"
+                [disabled]="updatingKitId === getKitId(kit) || !kitTerrainSelection[getKitId(kit)]">
+                Save Assignment
+              </button>
+              <button mat-button color="warn" (click)="unassignKitTerrain(kit)"
+                [disabled]="updatingKitId === getKitId(kit)">
+                Cancel Assignment
+              </button>
+            </div>
+          </div>
+
+          <div class="kit-meta">
+            <mat-chip-set>
+              <mat-chip [color]="getKitStatusColor(kit.status)" selected>
+                {{ kit.status | titlecase }}
+              </mat-chip>
+              <mat-chip *ngIf="kit.batteryPercent !== undefined" [color]="kit.batteryPercent > 20 ? 'accent' : 'warn'"
+                selected>
+                Battery: {{ kit.batteryPercent }}%
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Recent Alerts Section -->
+  <mat-card class="section-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>notifications_active</mat-icon>
+        Recent Alerts
+        <mat-chip *ngIf="unreadAlertCount > 0" class="unread-badge">
+          {{ unreadAlertCount }} unread
+        </mat-chip>
+      </mat-card-title>
+      <div class="header-actions">
+        <button mat-button (click)="markAllAlertsAsRead()" *ngIf="unreadAlertCount > 0">
+          Mark All as Read
+        </button>
+        <button mat-button color="primary" (click)="navigateToAlerts()">
+          View All
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="recentAlerts.length === 0" class="no-data">
+        <mat-icon>notifications_none</mat-icon>
+        <p>No alerts yet</p>
+      </div>
+
+      <mat-list *ngIf="recentAlerts.length > 0" class="alerts-list">
+        <mat-list-item *ngFor="let alert of recentAlerts" [class.unread]="!alert.read" (click)="markAlertAsRead(alert)">
+          <mat-icon matListItemIcon [class.warn]="alert.type === 'alert'">
+            {{ getAlertTypeIcon(alert.type) }}
+          </mat-icon>
+          <div matListItemTitle>
+            <strong>{{ alert.title || alert.type | titlecase }}</strong>
+          </div>
+          <div matListItemLine>{{ alert.message }}</div>
+          <div matListItemLine class="alert-time">
+            {{ alert.createdAt | date:'medium' }}
+          </div>
+          <mat-icon matListItemMeta *ngIf="!alert.read" class="unread-indicator">
+            fiber_new
+          </mat-icon>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+
+  <!-- AI PREDICTION SECTION -->
+
+
+  <mat-card class="section-card">
+
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>insights</mat-icon>
+        AI Live Prediction
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <div *ngIf="latestPrediction; else noPrediction" class="live-prediction">
+
+        <h3> Latest Prediction</h3>
+
+        <p><strong>Score:</strong> {{ latestPrediction.score }}</p>
+        <p><strong>Oil (L):</strong> {{ latestPrediction.oil_liters }}</p>
+        <p><strong>Grade:</strong> {{ latestPrediction.grade }}</p>
+
+      </div>
+
+
+      <ng-template #noPrediction>
+        <p>No prediction yet. Click “Predict Live” in Predictions page.</p>
+      </ng-template>
+
+    </mat-card-content>
+
+  </mat-card>
+
+  <mat-card class="section-card">
+
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>table_chart</mat-icon>
+        Prediction History
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <table class="prediction-table">
+
+        <tr>
+          <th>Score</th>
+          <th>Oil (L)</th>
+          <th>Grade</th>
+        </tr>
+
+        <tr *ngFor="let p of predictions">
+          <td>{{ p.score }}</td>
+          <td>{{ p.oil_liters }}</td>
+          <td>{{ p.grade }}</td>
+        </tr>
+
+      </table>
+
+      <p *ngIf="predictions.length === 0">
+        No predictions yet
+      </p>
+
+    </mat-card-content>
+
+  </mat-card>
+
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <button mat-raised-button color="accent" (click)="navigateToPredictions()" class="action-btn">
+      <mat-icon>trending_up</mat-icon>
+      View Predictions
+    </button>
+    <button mat-raised-button color="primary" (click)="loadData()" class="action-btn">
+      <mat-icon>refresh</mat-icon>
+      Refresh Data
+    </button>
+  </div>
+</div>

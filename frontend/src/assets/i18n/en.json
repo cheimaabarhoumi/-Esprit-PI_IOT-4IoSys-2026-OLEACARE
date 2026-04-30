@@ -1,0 +1,41 @@
+{
+  "profile": {
+    "title": {
+      "admin": "Profile - Administrator",
+      "farmer": "Profile - Farmer"
+    },
+    "addPhoto": "Add photo",
+    "editPhoto": "Edit photo",
+    "removePhoto": "Remove photo",
+    "imageModified": "Image changed. Save to apply.",
+    "memberSince": "Member since {{date}}",
+    "notProvided": "Not provided",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "nickname": "Nickname",
+    "email": "Email",
+    "phone": "Phone",
+    "phonePlaceholder": "+33 6 00 00 00 00",
+    "website": "Website",
+    "websitePlaceholder": "https://example.com",
+    "address": "Address",
+    "addressPlaceholder": "Street, city",
+    "city": "City",
+    "cityPlaceholder": "City",
+    "zip": "Zip code",
+    "zipPlaceholder": "00000",
+    "farmName": "Farm name",
+    "farmNamePlaceholder": "Farm name",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell us about yourself",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "editProfile": "Edit profile",
+    "photoOptions": "Photo options"
+  },
+  "role": {
+    "admin": "Administrator",
+    "farmer": "Farmer"
+  }
+}

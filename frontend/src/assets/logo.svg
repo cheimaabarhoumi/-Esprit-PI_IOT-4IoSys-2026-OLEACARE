@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <title>OleaCare - Professional Olive</title>
+  
+  <!-- Main olive fruit -->
+  <ellipse cx="60" cy="68" rx="24" ry="32" fill="#8fca52"/>
+  
+  <!-- Olive highlight (white gloss on left side) -->
+  <ellipse cx="48" cy="58" rx="9" ry="16" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Center top leaf (tallest) - more elongated -->
+  <path d="M 60 12 Q 55 30, 60 42 Q 65 30, 60 12" fill="#7fb642"/>
+  <path d="M 60 12 Q 62 30, 60 42 Q 58 30, 60 12" fill="#8fca52" opacity="0.8"/>
+</svg>

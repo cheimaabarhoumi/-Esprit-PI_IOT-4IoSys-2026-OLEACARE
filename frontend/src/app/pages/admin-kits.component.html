@@ -1,0 +1,85 @@
+<div class="admin-page">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+  <div class="page-header">
+    <div class="header-left">
+      <mat-icon class="header-icon">router</mat-icon>
+      <div>
+        <h1>IoT Kits Management</h1>
+        <p class="subtitle">{{ kits.length }} kit(s) registered</p>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">
+      <mat-icon>add_circle</mat-icon>
+      New Kit
+    </button>
+  </div>
+
+  <mat-card class="table-card">
+    <mat-card-content>
+      <mat-table [dataSource]="kits" class="admin-table">
+
+        <!-- Kit ID -->
+        <ng-container matColumnDef="kitId">
+          <mat-header-cell *matHeaderCellDef>Kit ID</mat-header-cell>
+          <mat-cell *matCellDef="let k">
+            <div class="kit-cell">
+              <mat-icon class="kit-icon">sensors</mat-icon>
+              <strong>{{ k.kitId }}</strong>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Model -->
+        <ng-container matColumnDef="model">
+          <mat-header-cell *matHeaderCellDef>Model</mat-header-cell>
+          <mat-cell *matCellDef="let k">{{ k.model || '—' }}</mat-cell>
+        </ng-container>
+
+        <!-- Status -->
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+          <mat-cell *matCellDef="let k">
+            <mat-chip [color]="getStatusColor(k.status)" selected>
+              <mat-icon>{{ getStatusIcon(k.status) }}</mat-icon>
+              {{ k.status | titlecase }}
+            </mat-chip>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Assigned To -->
+        <ng-container matColumnDef="assignedTo">
+          <mat-header-cell *matHeaderCellDef>Assigned To</mat-header-cell>
+          <mat-cell *matCellDef="let k">
+            <span *ngIf="k.assignedTo">
+              <mat-icon style="font-size:16px;vertical-align:middle;color:#666">agriculture</mat-icon>
+              {{ k.assignedTo.firstName }} {{ k.assignedTo.lastName }}
+            </span>
+            <span *ngIf="!k.assignedTo" class="unassigned">Unassigned</span>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+          <mat-cell *matCellDef="let k" class="actions-cell">
+            <button mat-icon-button color="primary" (click)="openEditDialog(k)" matTooltip="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteKit(k)" matTooltip="Delete">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></mat-row>
+      </mat-table>
+
+      <div *ngIf="!loading && kits.length === 0" class="empty-state">
+        <mat-icon>router</mat-icon>
+        <p>No kits registered. Add the first one with the button above.</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

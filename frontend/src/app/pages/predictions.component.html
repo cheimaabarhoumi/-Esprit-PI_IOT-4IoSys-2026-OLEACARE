@@ -1,0 +1,230 @@
+<div class="predictions-container">
+  <mat-toolbar color="primary">
+    <button mat-icon-button routerLink="/farmer">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span>Prediction History</span>
+    <span class="spacer"></span>
+    <mat-chip-set aria-label="API Status">
+      <mat-chip [highlighted]="apiConnected">
+        <mat-icon matChipAvatar *ngIf="apiConnected">check_circle</mat-icon>
+        <mat-icon matChipAvatar *ngIf="!apiConnected">error</mat-icon>
+        {{ apiConnected ? 'ML API Connected' : 'ML API Offline' }}
+      </mat-chip>
+    </mat-chip-set>
+  </mat-toolbar>
+
+  <mat-progress-bar *ngIf="loading || mlLoading" mode="indeterminate"></mat-progress-bar>
+
+  <div class="content">
+    <!-- Tabs -->
+    <mat-tab-group>
+      <!-- Tab 1: Live Prediction (ML) -->
+      <mat-tab label=" Predict Live (ML)" *ngIf="apiConnected">
+        <div class="tab-content p-4">
+          <div class="row">
+            <!-- Left: Image Upload & Sensor Input -->
+            <div class="col-lg-5">
+              <div class="card shadow-sm">
+                <div class="card-header bg-olive">
+                  <h5 class="mb-0"><i class="bi bi-image"></i> Upload & Capteurs</h5>
+                </div>
+                <div class="card-body">
+                  <!-- Image Upload -->
+                  <div class="mb-4">
+                    <label class="form-label fw-bold"> Télécharger une Image</label>
+                    <div class="upload-area">
+                      <input type="file" 
+                             accept="image/*" 
+                             (change)="onImageSelected($event)"
+                             #imageInput
+                             hidden>
+                      <div (click)="imageInput.click()" class="upload-box">
+                        <mat-icon>cloud_upload</mat-icon>
+                        <p>Cliquez ou déposez une image</p>
+                        <small>JPG, PNG (Max 10MB)</small>
+                      </div>
+                    </div>
+
+                    <!-- Image Preview -->
+                    <div *ngIf="imagePreview" class="mt-3">
+                      <img [src]="imagePreview" alt="Preview" class="img-preview">
+                      <button mat-icon-button (click)="selectedImage = null; imagePreview = null" 
+                              class="remove-image" title="Supprimer">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+
+                  <hr>
+
+                  <!-- Sensor Data -->
+                  <div class="mb-4">
+                    <label class="form-label fw-bold"> Données de Capteurs</label>
+                    
+                    <div class="mb-3">
+                      <label class="form-label">Température (°C)</label>
+                      <input type="number" 
+                             class="form-control" 
+                             [(ngModel)]="sensorData.temperature"
+                             step="0.1">
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Humidité (%)</label>
+                      <input type="number" 
+                             class="form-control" 
+                             [(ngModel)]="sensorData.humidity"
+                             step="0.1">
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Humidité du Sol (%)</label>
+                      <input type="number" 
+                             class="form-control" 
+                             [(ngModel)]="sensorData.soil_moisture"
+                             step="0.1">
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Lumière (lux)</label>
+                      <input type="number" 
+                             class="form-control" 
+                             [(ngModel)]="sensorData.light"
+                             step="1">
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Terrain (hectares)</label>
+                      <input type="number" 
+                             class="form-control" 
+                             [(ngModel)]="sensorData.terrain_hectares"
+                             step="0.1">
+                    </div>
+                  </div>
+
+                  <hr>
+
+                  <!-- Action Buttons -->
+                  <div class="btn-group-vertical w-100" role="group">
+                    <button mat-raised-button 
+                            color="primary" 
+                            (click)="predictAndDetect()"
+                            [disabled]="mlLoading || !selectedImage"
+                            class="mb-2">
+                      <mat-icon>stars</mat-icon>
+                      Détection + Prédiction
+                    </button>
+                    <button mat-raised-button 
+                            color="accent" 
+                            (click)="detectImageOnly()"
+                            [disabled]="mlLoading || !selectedImage"
+                            class="mb-2">
+                      <mat-icon>visibility</mat-icon>
+                      Détection Seule
+                    </button>
+                    <button mat-raised-button 
+                            (click)="predictSensorsOnly()"
+                            [disabled]="mlLoading"
+                            class="mb-2">
+                      <mat-icon>sensors</mat-icon>
+                      Prédiction Seule
+                    </button>
+                    <button mat-raised-button 
+                            (click)="clearResults()"
+                            [disabled]="mlLoading">
+                      <mat-icon>clear</mat-icon>
+                      Réinitialiser
+                    </button>
+                  </div>
+
+                  <!-- Error Message -->
+                  <div *ngIf="mlError" class="alert alert-danger mt-3">
+                    <mat-icon>error</mat-icon> {{ mlError }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Results Display -->
+            <div class="col-lg-7">
+              <div *ngIf="!showMLResults && !mlLoading" class="empty-state">
+                <mat-icon>image_search</mat-icon>
+                <h4>Aucun résultat</h4>
+                <p>Sélectionnez une image et cliquez sur "Détection + Prédiction"</p>
+              </div>
+
+              <div *ngIf="mlLoading" class="text-center p-5">
+                <mat-spinner diameter="50"></mat-spinner>
+                <p class="mt-3">Traitement en cours...</p>
+              </div>
+
+              <div *ngIf="showMLResults && !mlLoading">
+                <app-ml-results-display 
+                  [detection]="detectionResult"
+                  [prediction]="predictionResult"
+                  [timestamp]="mlResultTimestamp">
+                </app-ml-results-display>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Tab 2: Prediction History -->
+      <mat-tab label=" Historical Predictions">
+        <div class="tab-content p-4">
+          <mat-table [dataSource]="predictions" class="full-width">
+            <ng-container matColumnDef="createdAt">
+              <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{ element.createdAt | date }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="quality_grade">
+              <mat-header-cell *matHeaderCellDef>Grade</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <mat-chip [style.background]="getQualityColor(element.quality_grade)">
+                  {{ element.quality_grade }}
+                </mat-chip>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="maturity_index">
+              <mat-header-cell *matHeaderCellDef>Maturity</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{ (element.maturity_index * 100).toFixed(1) }}%
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="quality_score">
+              <mat-header-cell *matHeaderCellDef>Score</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{ element.quality_score }}/10
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="total_oil_liters">
+              <mat-header-cell *matHeaderCellDef>Oil (L)</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{ element.total_oil_liters }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="optimal_harvest_date">
+              <mat-header-cell *matHeaderCellDef>Harvest Date</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                {{ element.optimal_harvest_date | date }}
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons (page)="onPageChange($event)">
+          </mat-paginator>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
