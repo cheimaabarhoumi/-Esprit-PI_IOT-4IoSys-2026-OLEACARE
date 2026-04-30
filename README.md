@@ -1,4 +1,4 @@
-# OleaCare 🫒
+# OleaCare 
 
 ## Overview
 
@@ -12,13 +12,13 @@ This project was developed as part of a final academic project at **ESPRIT Schoo
 
 ## Features
 
-- 📡 **Real-time sensor data collection** — atmospheric pressure, temperature, and light intensity measured directly in the olive field
-- 🫒 **Olive image analysis** — YOLO-based computer vision model detects and analyses olive characteristics via a 5MP camera
-- 🤖 **AI-powered predictions** — four machine learning models predict oil quality classification, yield (kg/tree), oil percentage, and acidity percentage
-- 📅 **Harvest timing recommendation** — system estimates the optimal harvest date based on sensor data and model outputs
-- 💬 **Chatbot assistant** — conversational interface that gives farmers personalized, actionable recommendations
-- 📊 **Live dashboard** — Angular-based web interface displaying all predictions, trends, and alerts
-- 🔋 **Autonomous field node** — solar-compatible battery system (24V Li-ion + BMS + DC-DC converter) for outdoor deployment
+-  **Real-time sensor data collection** — atmospheric pressure, temperature, and light intensity measured directly in the olive field
+-  **Olive image analysis** — YOLO-based computer vision model detects and analyses olive characteristics via a 5MP camera
+-  **AI-powered predictions** — four machine learning models predict oil quality classification, yield (kg/tree), oil percentage, and acidity percentage
+-  **Harvest timing recommendation** — system estimates the optimal harvest date based on sensor data and model outputs
+-  **Chatbot assistant** — conversational interface that gives farmers personalized, actionable recommendations
+-  **Live dashboard** — Angular-based web interface displaying all predictions, trends, and alerts
+-  **Autonomous field node** — solar-compatible battery system (24V Li-ion + BMS + DC-DC converter) for outdoor deployment
 
 ---
 
@@ -168,7 +168,7 @@ This project explores the integration of embedded AI at the edge (Edge Impulse o
 
 | Name | Role |
 |---|---|
-| [Your Name] | Full stack development, AI integration, IoT prototype |
+| Cheima Barhoumi | Full stack development, AI integration, IoT prototype |
 
 ---
 
