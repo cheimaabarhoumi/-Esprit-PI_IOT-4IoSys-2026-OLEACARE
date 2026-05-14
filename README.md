@@ -169,6 +169,12 @@ This project explores the integration of embedded AI at the edge (Edge Impulse o
 | Name | Role |
 |---|---|
 | Cheima Barhoumi | Full stack development, AI integration, IoT prototype |
+| Yassine Zarrouk | Full stack development, AI integration, IoT prototype |
+| Rania Jendoubi  | Full stack development, AI integration, IoT prototype |
+| Ahmed Jeridi    | Full stack development, AI integration, IoT prototype |
+| Majd Grami      | Full stack development, AI integration, IoT prototype |
+| Cheker Dimessi  | Full stack development, AI integration, IoT prototype |
+| Chayma Bensalah | Full stack development, AI integration, IoT prototype |
 
 ---
 
